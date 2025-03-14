@@ -13,7 +13,7 @@ import java.util.List;
 @RequestMapping("/cashcards")
 public class CashCardController {
     private CashCardRepository cashCardRepository;
-    // Testing CI
+    // Testingg CI
 
     @Autowired
     private void CashCardRepository(CashCardRepository cashCardRepository) {
