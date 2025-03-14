@@ -85,7 +85,7 @@ public class CashCardControllerTests {
     void shouldReturnCashCardById() throws Exception{
         when(cashCardRepository.findByIdAndOwner(1L, "sarah")).thenReturn(cashCard);
 
-        mockMvc.perform(get("/cashcards/1"))
+        mockMvc.perform(get("/cashcards/99"))
                 .andExpect(status().isOk())
                 .andExpect(content().json(objectMapper.writeValueAsString(cashCard)));
     }
