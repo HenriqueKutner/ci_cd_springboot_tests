@@ -1,4 +1,8 @@
 package com.example.cashcard;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,9 +15,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/cashcards")
+@Tag(name = "Cashcard", description = "Cashcard controller")
+@SecurityRequirement(name = "basicAuth")
 public class CashCardController {
     private CashCardRepository cashCardRepository;
-    // Testingg CI
 
     @Autowired
     private void CashCardRepository(CashCardRepository cashCardRepository) {
@@ -40,13 +45,21 @@ public class CashCardController {
 
 
     @PostMapping
+    @Operation(summary = "Add new cashcard")
+    @ApiResponse(responseCode = "201", description = "New cashcard saved")
+    @ApiResponse(responseCode = "500", description = "Erro")
     private ResponseEntity<Void> createCashCard(@RequestBody CashCard newCashCardRequest, UriComponentsBuilder ucb) {
-        CashCard savedCashCard = cashCardRepository.save(newCashCardRequest);
-        URI locationOfNewCashCard = ucb
-                .path("cashcards/{id}")
-                .buildAndExpand(savedCashCard.getId())
-                .toUri();
-        return ResponseEntity.created(locationOfNewCashCard).build();
+        try {
+            CashCard savedCashCard = cashCardRepository.save(newCashCardRequest);
+            URI locationOfNewCashCard = ucb
+                    .path("cashcards/{id}")
+                    .buildAndExpand(savedCashCard.getId())
+                    .toUri();
+            return ResponseEntity.created(locationOfNewCashCard).build();
+        } catch (Exception e) {
+            System.out.println("Teste de erro");
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     @PutMapping("/{requestedId}")

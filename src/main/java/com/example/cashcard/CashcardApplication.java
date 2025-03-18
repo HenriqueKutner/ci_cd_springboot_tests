@@ -9,3 +9,4 @@ public class CashcardApplication {
 		SpringApplication.run(CashcardApplication.class, args);
 	}
 }
+
